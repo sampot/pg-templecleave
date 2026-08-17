@@ -1,19 +1,40 @@
 # 廟口斬陣 (`pg-templecleave`)
 
-自由移動、技能冷卻、裝備掉落關卡。
+夜裡廟埕起了陰陣。持刀踏陣，斬盡**五關**的鬼兵與坐鎮頭目。
+自由移動的砍殺／ARPG：走位、技能冷卻、裝備掉落、波次成陣。
 
 類型：**砍殺／ARPG** · 系列建議：街機
 
+## 操作
+
+| | 移動 | 斬 | 旋斬 | 火符 | 疾步 | 暫停 |
+| --- | --- | --- | --- | --- | --- | --- |
+| 鍵盤 | WASD／方向鍵 | J／空白 | K | L | Shift | Esc／P |
+| 手機 | 左下拖曳＝搖桿（按哪就以哪為圓心） | 右下大鈕 | 右下 | 右下 | 右下 | 頂端「暫停」 |
+
+滑鼠可另外瞄準：移動＝指向刀鋒，左鍵＝斬。
+
+## 規則
+
+- 每關數波鬼陣，最後一波是**頭目**；清光全場後廟門開啟，走進廟門進下一關。
+- 五關全破＝勝；命歸零＝敗。深關的鬼更硬、更痛、更快（`tuning`）。
+- 鬼會掉**刀／甲／符**（五階）與**香火**（回血）。同階或更差的掉落自動化去，換成少量回血＋分數。
+- 甲不只減傷，也加命上限；換上更好的甲會即刻補到新上限的差額。
+- 最高分與到達關卡經 `PG.kv`（或宿主 `/api/kv`）存檔；沒有宿主時退回記憶體，遊戲照玩。
+
 ## 遊玩
 
-純 HTML／CSS／JavaScript（無 build）。本機開 `index.html` 或經 Playgrounds／go 安裝。
+純 HTML／CSS／JavaScript（無 build）。本機開 `index.html`（或 `python3 -m http.server`）、或經 Playgrounds／go 安裝。
 
 ## 開發
 
 ```bash
-npx vitest run
+npm test        # vitest：規則、地圖、掉落、輸入、存檔，含 bot 全關試打
 ```
+
+模擬與畫面完全分離：`src/` 是純函式模組（可在 node 下跑完整場次），`app.js` 只負責 DOM、canvas、rAF 與音訊。
+`tests/bot.js` 是一隻走 flow field 的簡單 bot，用來確認每關真的可過、不會卡死。
 
 ## 署名
 
-見 [ATTRIBUTION.md](./ATTRIBUTION.md)。
+見 [ATTRIBUTION.md](./ATTRIBUTION.md)（CC0 也署名）。

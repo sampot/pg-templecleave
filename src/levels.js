@@ -1,0 +1,195 @@
+/**
+ * 五關廟埕。每關 = 一張 ASCII 地圖 + 數波敵陣 + 一名坐鎮頭目。
+ * 圖例見 src/maps.js。
+ */
+export const LEVELS = [
+  {
+    id: "miaocheng",
+    name: "廟埕暖身",
+    subtitle: "香案初設，小鬼探路",
+    music: "battle",
+    tuning: { hpScale: 1, damageScale: 1, speedScale: 1 },
+    rows: [
+      "#########GG##########",
+      "#...................#",
+      "#.1...............1.#",
+      "#...................#",
+      "#..T...L.....L...T..#",
+      "#...................#",
+      "#..,,,.......,,,....#",
+      "#..,o,.......,o,....#",
+      "#..,,,.......,,,....#",
+      "#...................#",
+      "#..T...L.....L...T..#",
+      "#...................#",
+      "#.2.......P.......2.#",
+      "#...................#",
+      "#####################",
+    ],
+    waves: [
+      { spawns: [{ type: "xiaogui", count: 3 }] },
+      { spawns: [{ type: "xiaogui", count: 3 }, { type: "wugong", count: 2 }] },
+      { spawns: [{ type: "yinbing", count: 3 }, { type: "xiaogui", count: 2 }] },
+      { boss: "niutou", spawns: [{ type: "xiaogui", count: 2 }] },
+    ],
+  },
+  {
+    id: "xianglu",
+    name: "香爐煙障",
+    subtitle: "煙裡有水鬼，貼牆走",
+    music: "battle",
+    tuning: { hpScale: 1.12, damageScale: 1.1, speedScale: 1.03 },
+    rows: [
+      "##########GG###########",
+      "#.....................#",
+      "#.1.................1.#",
+      "#...T.............T...#",
+      "#..L...............L..#",
+      "#....,,,.....,,,......#",
+      "#....,o,.....,o,......#",
+      "#....,,,.....,,,......#",
+      "#..L...............L..#",
+      "#.....###.....###.....#",
+      "#.....#T#.....#T#.....#",
+      "#.....###.....###.....#",
+      "#..T.............T....#",
+      "#.3.......P.......3...#",
+      "#..L.............L....#",
+      "#.....................#",
+      "#######################",
+    ],
+    waves: [
+      { spawns: [{ type: "yinbing", count: 3 }, { type: "wugong", count: 3 }] },
+      { spawns: [{ type: "shuigui", count: 2 }, { type: "xiaogui", count: 4 }] },
+      { spawns: [{ type: "jiangshi", count: 2 }, { type: "shuigui", count: 2 }] },
+      { boss: "heiwuchang", spawns: [{ type: "wugong", count: 3 }] },
+    ],
+  },
+  {
+    id: "xitai",
+    name: "戲台夾殺",
+    subtitle: "台上鑼鼓，台下火鬼",
+    music: "battle",
+    tuning: { hpScale: 1.24, damageScale: 1.14, speedScale: 1.06 },
+    rows: [
+      "###########GG############",
+      "#.......................#",
+      "#.1...................1.#",
+      "#...TTT.........TTT.....#",
+      "#...TTT.........TTT.....#",
+      "#...TTT.........TTT.....#",
+      "#.......................#",
+      "#..L...,,,.....,,,...L..#",
+      "#......,o,.....,o,......#",
+      "#..L...,,,.....,,,...L..#",
+      "#.......................#",
+      "#....###...........###..#",
+      "#....###...........###..#",
+      "#....###...........###..#",
+      "#.......................#",
+      "#.3.................3...#",
+      "#....L....P.....L.......#",
+      "#.......................#",
+      "#########################",
+    ],
+    waves: [
+      { spawns: [{ type: "huogui", count: 3 }, { type: "wugong", count: 3 }] },
+      { spawns: [{ type: "shuigui", count: 3 }, { type: "yinbing", count: 3 }] },
+      { spawns: [{ type: "yanmei", count: 2 }, { type: "huogui", count: 3 }] },
+      { spawns: [{ type: "jiangshi", count: 3 }, { type: "xiaogui", count: 4 }] },
+      { boss: "guicha", spawns: [{ type: "yinbing", count: 2 }] },
+    ],
+  },
+  {
+    id: "jinlu",
+    name: "金爐火巷",
+    subtitle: "巷窄爐旺，別被圍住",
+    music: "battle",
+    tuning: { hpScale: 1.38, damageScale: 1.24, speedScale: 1.09 },
+    rows: [
+      "############GG###########",
+      "#.......................#",
+      "#.1...................1.#",
+      "#..###.............###..#",
+      "#..#o#.............#o#..#",
+      "#..###.............###..#",
+      "#.......................#",
+      "#....L...........L......#",
+      "#....###.......###......#",
+      "#....#T#.......#T#......#",
+      "#....###.......###......#",
+      "#....L...........L......#",
+      "#.......................#",
+      "#..###.............###..#",
+      "#..#o#.............#o#..#",
+      "#..###.............###..#",
+      "#.2...................2.#",
+      "#..........P............#",
+      "#....L...........L......#",
+      "#.......................#",
+      "#########################",
+    ],
+    waves: [
+      { spawns: [{ type: "huogui", count: 4 }, { type: "yinbing", count: 3 }] },
+      { spawns: [{ type: "yanmei", count: 3 }, { type: "wugong", count: 4 }] },
+      { spawns: [{ type: "jiangshi", count: 3 }, { type: "shuigui", count: 3 }] },
+      { spawns: [{ type: "huogui", count: 3 }, { type: "yanmei", count: 2 }, { type: "yinbing", count: 3 }] },
+      { boss: "guiwang", spawns: [{ type: "huogui", count: 2 }] },
+    ],
+  },
+  {
+    id: "miaomen",
+    name: "廟門大煞",
+    subtitle: "陣眼在此，斬了便收",
+    music: "boss",
+    tuning: { hpScale: 1.55, damageScale: 1.34, speedScale: 1.12 },
+    rows: [
+      "#############GG############",
+      "#.........................#",
+      "#.1.....................1.#",
+      "#...L.................L...#",
+      "#.....,,,,,.....,,,,,.....#",
+      "#.....,,o,,.....,,o,,.....#",
+      "#.....,,,,,.....,,,,,.....#",
+      "#.........................#",
+      "#..L...................L..#",
+      "#.....###.........###.....#",
+      "#.....#T#.........#T#.....#",
+      "#.....###.........###.....#",
+      "#..L...................L..#",
+      "#.........................#",
+      "#....TT...........TT......#",
+      "#....TT...........TT......#",
+      "#.3.....................3.#",
+      "#............P............#",
+      "#....L.................L..#",
+      "#.........................#",
+      "###########################",
+    ],
+    waves: [
+      { spawns: [{ type: "yinbing", count: 4 }, { type: "huogui", count: 3 }] },
+      { spawns: [{ type: "yanmei", count: 3 }, { type: "shuigui", count: 3 }] },
+      { spawns: [{ type: "jiangshi", count: 4 }, { type: "wugong", count: 4 }] },
+      { spawns: [{ type: "huogui", count: 4 }, { type: "yinbing", count: 4 }] },
+      { spawns: [{ type: "yanmei", count: 3 }, { type: "jiangshi", count: 3 }, { type: "shuigui", count: 3 }] },
+      { boss: "dasha", spawns: [{ type: "yinbing", count: 3 }, { type: "huogui", count: 2 }] },
+    ],
+  },
+];
+
+export const LEVEL_COUNT = LEVELS.length;
+
+export function getLevel(index) {
+  const level = LEVELS[index];
+  if (!level) throw new Error(`no level at index ${index}`);
+  return level;
+}
+
+export function totalWaves(level) {
+  return level.waves.length;
+}
+
+export function bossOf(level) {
+  const wave = level.waves.find((w) => w.boss);
+  return wave ? wave.boss : null;
+}

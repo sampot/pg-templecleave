@@ -1,1 +1,81 @@
-<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#090b18"><meta name="description" content="闖過五個廟埕房間，管理技能冷卻並收集強化戰利品。"><title>廟口斬陣</title><link rel="stylesheet" href="./styles.css"></head><body><main><header class="top"><div><p class="eyebrow">俯視動作 RPG</p><h1>廟口斬陣</h1></div><button id="sound" class="sound" type="button" aria-pressed="true">♪ 音樂開</button></header><section id="lobby" class="panel"><img class="lobby-art" src="./assets/images/cover.png" alt=""><p class="blurb">闖過五個廟埕房間，管理技能冷卻並收集強化戰利品。</p><div class="options"></div><button id="start" class="primary" type="button">開始挑戰</button><p class="meta">本機最佳 <strong id="best">0</strong> · <a href="./ATTRIBUTION.md">素材署名</a></p></section><section id="game" hidden><div class="gamebar"><span id="badge" class="badge">進行中</span><p id="hud"></p></div><div class="stage-wrap"><canvas id="stage" width="800" height="450" aria-label="廟口斬陣遊戲畫面"></canvas></div><p id="message" class="message" aria-live="polite"></p><div id="controls" class="controls" aria-label="遊戲控制"></div></section></main><script type="module" src="./app.js"></script></body></html>
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="dark" />
+    <title>廟口斬陣</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <div id="game">
+      <canvas id="stage" aria-label="廟口斬陣戰場"></canvas>
+
+      <header class="hud-top" id="hud-top">
+        <div class="hud-vitals">
+          <div class="bar bar-hp"><span id="hp-fill"></span><b id="hp-text">100／100</b></div>
+          <div class="hud-line">
+            <span id="level-name">廟埕暖身</span>
+            <span id="wave-label">第 1／4 陣</span>
+            <span id="score-label">分 0</span>
+          </div>
+        </div>
+        <div class="hud-buttons">
+          <button type="button" id="btn-mute" class="chip" aria-pressed="false">♪</button>
+          <button type="button" id="btn-pause" class="chip">暫停</button>
+        </div>
+      </header>
+
+      <div class="boss-bar" id="boss-bar" hidden>
+        <b id="boss-name">頭目</b>
+        <div class="bar bar-boss"><span id="boss-fill"></span></div>
+      </div>
+
+      <ul class="gear-strip" id="gear-strip"></ul>
+
+      <div class="toast-stack" id="toasts" aria-live="polite"></div>
+
+      <div class="touch-layer" id="touch-layer">
+        <div class="stick-zone" id="stick-zone">
+          <div class="stick" id="stick" hidden>
+            <span class="stick-knob" id="stick-knob"></span>
+          </div>
+        </div>
+        <div class="action-pad" id="action-pad">
+          <button type="button" class="act act-sub" data-skill="talisman">
+            <img alt="" src="./assets/icons/fire.png" /><em>火符</em><i></i>
+          </button>
+          <button type="button" class="act act-sub" data-skill="whirl">
+            <img alt="" src="./assets/icons/arrow_rotate.png" /><em>旋斬</em><i></i>
+          </button>
+          <button type="button" class="act act-sub" data-skill="dash">
+            <img alt="" src="./assets/icons/campfire.png" /><em>疾步</em><i></i>
+          </button>
+          <button type="button" class="act act-main" data-skill="cleave">
+            <img alt="" src="./assets/icons/sword.png" /><em>斬</em><i></i>
+          </button>
+        </div>
+      </div>
+
+      <section class="panel" id="panel" hidden>
+        <div class="panel-card">
+          <h1 id="panel-title">廟口斬陣</h1>
+          <p id="panel-sub"></p>
+          <dl id="panel-stats"></dl>
+          <div class="panel-actions" id="panel-actions"></div>
+          <details class="credits">
+            <summary>素材署名</summary>
+            <ul>
+              <li>角色圖：Tiny Creatures — Kenney／Clint Bellanger — CC0</li>
+              <li>道具圖示：Board Game Icons — Kenney — CC0</li>
+              <li>音效：RPG Audio、Impact Sounds、Music Jingles — Kenney — CC0</li>
+              <li>音樂：High Quality 16-bit RPG Music — HydroGene — CC0</li>
+              <li>字型：俐方體 11 號 Cubic 11 — ACh-K — OFL 1.1</li>
+            </ul>
+          </details>
+        </div>
+      </section>
+    </div>
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>

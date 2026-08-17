@@ -1,1 +1,6 @@
-module.exports = { test: { include: ["*.test.js"] } };
+export default {
+  test: {
+    include: ["tests/**/*.test.js"],
+    environment: "node",
+  },
+};

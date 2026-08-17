@@ -1,0 +1,10 @@
+{
+  "name": "pg-templecleave",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "廟口斬陣 — Playgrounds 俯視動作／斬擊關卡遊戲（無 build，純 HTML/CSS/JS）",
+  "scripts": {
+    "test": "vitest run"
+  }
+}

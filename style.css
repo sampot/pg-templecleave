@@ -1,0 +1,499 @@
+@font-face {
+  font-family: "Cubic 11";
+  src: url("./assets/fonts/Cubic_11.woff2") format("woff2");
+  font-display: swap;
+}
+
+:root {
+  --ink: #f5e9d8;
+  --dim: #b39a86;
+  --red: #c2352a;
+  --gold: #ffce5c;
+  --panel: rgba(20, 13, 12, 0.92);
+  --safe-b: env(safe-area-inset-bottom, 0px);
+  --safe-l: env(safe-area-inset-left, 0px);
+  --safe-r: env(safe-area-inset-right, 0px);
+  --safe-t: env(safe-area-inset-top, 0px);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  background: #100c0b;
+  color: var(--ink);
+  font-family: "Cubic 11", system-ui, "PingFang TC", "Noto Sans TC", sans-serif;
+  overscroll-behavior: none;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  overflow: hidden;
+}
+
+#game {
+  position: relative;
+  width: 100%;
+  height: 100dvh;
+  overflow: hidden;
+}
+
+#stage {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  touch-action: none;
+}
+
+/* ---------- HUD ---------- */
+
+.hud-top {
+  position: absolute;
+  top: calc(6px + var(--safe-t));
+  left: calc(8px + var(--safe-l));
+  right: calc(8px + var(--safe-r));
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  pointer-events: none;
+}
+
+.hud-vitals {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.bar {
+  position: relative;
+  height: 16px;
+  border: 2px solid rgba(0, 0, 0, 0.6);
+  border-radius: 9px;
+  background: rgba(10, 6, 6, 0.72);
+  overflow: hidden;
+}
+
+.bar > span {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  transform-origin: left center;
+  transition: transform 120ms linear;
+}
+
+.bar-hp > span {
+  background: linear-gradient(90deg, #ff5b47, #ffb04a);
+}
+
+.bar-hp > b {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-size: 11px;
+  font-weight: 400;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.85);
+}
+
+.hud-line {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 10px;
+  margin-top: 4px;
+  font-size: 12px;
+  color: var(--dim);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
+}
+
+.hud-line span:first-child {
+  color: var(--gold);
+}
+
+.hud-buttons {
+  display: flex;
+  gap: 6px;
+  pointer-events: auto;
+}
+
+.chip {
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0 10px;
+  border: 2px solid rgba(255, 206, 92, 0.35);
+  border-radius: 12px;
+  background: rgba(24, 15, 13, 0.82);
+  color: var(--ink);
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.chip[aria-pressed="true"] {
+  border-color: var(--red);
+  color: var(--dim);
+}
+
+.boss-bar {
+  position: absolute;
+  top: calc(60px + var(--safe-t));
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(320px, calc(100% - 32px));
+  text-align: center;
+  pointer-events: none;
+}
+
+.boss-bar b {
+  display: block;
+  font-size: 12px;
+  color: #ffb3a6;
+  text-shadow: 0 1px 2px #000;
+}
+
+.bar-boss {
+  height: 12px;
+  margin-top: 2px;
+}
+
+.bar-boss > span {
+  background: linear-gradient(90deg, #8b1f16, #ff4d3d);
+}
+
+.gear-strip {
+  position: absolute;
+  top: calc(60px + var(--safe-t));
+  left: calc(8px + var(--safe-l));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  pointer-events: none;
+}
+
+.gear-strip li {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 2px 7px 2px 3px;
+  border-radius: 999px;
+  background: rgba(18, 11, 10, 0.72);
+  font-size: 11px;
+  color: var(--ink);
+}
+
+.gear-strip img {
+  width: 16px;
+  height: 16px;
+  image-rendering: pixelated;
+}
+
+.toast-stack {
+  position: absolute;
+  left: 50%;
+  bottom: calc(190px + var(--safe-b));
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: min(300px, calc(100% - 32px));
+  pointer-events: none;
+}
+
+.toast {
+  padding: 7px 12px;
+  border-radius: 10px;
+  background: rgba(26, 16, 14, 0.92);
+  border: 1px solid rgba(255, 206, 92, 0.3);
+  font-size: 12px;
+  text-align: center;
+  animation: toast-in 160ms ease-out;
+}
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
+/* ---------- 觸控層 ---------- */
+
+.touch-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.stick-zone {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 46%;
+  height: 46%;
+  max-height: 300px;
+  pointer-events: auto;
+  touch-action: none;
+}
+
+.stick {
+  position: absolute;
+  width: 104px;
+  height: 104px;
+  margin: -52px 0 0 -52px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 206, 92, 0.4);
+  background: rgba(30, 18, 16, 0.4);
+}
+
+.stick-knob {
+  position: absolute;
+  width: 46px;
+  height: 46px;
+  margin: -23px 0 0 -23px;
+  border-radius: 50%;
+  background: rgba(255, 206, 92, 0.72);
+  box-shadow: 0 0 12px rgba(255, 150, 60, 0.5);
+}
+
+.action-pad {
+  position: absolute;
+  right: calc(10px + var(--safe-r));
+  bottom: calc(14px + var(--safe-b));
+  width: 176px;
+  height: 176px;
+  pointer-events: auto;
+  touch-action: manipulation;
+}
+
+.act {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  gap: 0;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 206, 92, 0.42);
+  background: rgba(28, 17, 15, 0.78);
+  color: var(--ink);
+  font: inherit;
+  cursor: pointer;
+  overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.act img {
+  width: 26px;
+  height: 26px;
+  filter: invert(1) sepia(1) saturate(3) hue-rotate(-18deg);
+  pointer-events: none;
+}
+
+.act em {
+  font-style: normal;
+  font-size: 10px;
+  line-height: 1;
+  margin-top: 2px;
+  pointer-events: none;
+}
+
+.act i {
+  position: absolute;
+  inset: 0;
+  background: rgba(6, 4, 4, 0.66);
+  transform-origin: bottom center;
+  transform: scaleY(0);
+  pointer-events: none;
+}
+
+.act:active {
+  border-color: var(--gold);
+  background: rgba(70, 34, 24, 0.9);
+}
+
+.act-main {
+  right: 0;
+  bottom: 0;
+  width: 96px;
+  height: 96px;
+}
+
+.act-main img {
+  width: 34px;
+  height: 34px;
+}
+
+.act-main em {
+  font-size: 12px;
+}
+
+.act-sub {
+  width: 64px;
+  height: 64px;
+}
+
+.act-sub[data-skill="whirl"] {
+  right: 100px;
+  bottom: 8px;
+}
+
+.act-sub[data-skill="talisman"] {
+  right: 84px;
+  bottom: 84px;
+}
+
+.act-sub[data-skill="dash"] {
+  right: 8px;
+  bottom: 100px;
+}
+
+/* ---------- 面板 ---------- */
+
+.panel {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: calc(12px + var(--safe-t)) 12px calc(12px + var(--safe-b));
+  background: rgba(8, 5, 5, 0.72);
+  backdrop-filter: blur(2px);
+  overflow-y: auto;
+  z-index: 5;
+}
+
+.panel[hidden] {
+  display: none;
+}
+
+.panel-card {
+  width: min(420px, 100%);
+  padding: 18px 16px 16px;
+  border-radius: 18px;
+  border: 2px solid rgba(255, 206, 92, 0.35);
+  background: var(--panel);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.6);
+}
+
+.panel-card h1 {
+  margin: 0 0 6px;
+  font-size: 26px;
+  color: var(--gold);
+  letter-spacing: 2px;
+}
+
+.panel-card p {
+  margin: 0 0 12px;
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--dim);
+}
+
+#panel-stats {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 4px 12px;
+  margin: 0 0 14px;
+  font-size: 13px;
+}
+
+#panel-stats dt {
+  color: var(--dim);
+}
+
+#panel-stats dd {
+  margin: 0;
+  color: var(--ink);
+}
+
+.panel-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.panel-actions button {
+  min-height: 48px;
+  padding: 0 16px;
+  border-radius: 12px;
+  border: 2px solid rgba(255, 206, 92, 0.45);
+  background: linear-gradient(180deg, #7d2a20, #4a1712);
+  color: var(--ink);
+  font: inherit;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.panel-actions button.ghost {
+  background: rgba(24, 15, 13, 0.8);
+  border-color: rgba(255, 255, 255, 0.16);
+  font-size: 13px;
+}
+
+.panel-actions button:active {
+  transform: translateY(1px);
+}
+
+.credits {
+  margin-top: 14px;
+  font-size: 11px;
+  color: var(--dim);
+}
+
+.credits summary {
+  cursor: pointer;
+  min-height: 32px;
+  display: flex;
+  align-items: center;
+}
+
+.credits ul {
+  margin: 6px 0 0;
+  padding-left: 18px;
+  line-height: 1.7;
+}
+
+.help-keys {
+  margin-top: 10px;
+  font-size: 11px;
+  color: var(--dim);
+  line-height: 1.8;
+}
+
+/* ---------- 大螢幕增強 ---------- */
+
+@media (min-width: 760px) {
+  .hud-line {
+    font-size: 13px;
+  }
+
+  .action-pad {
+    width: 200px;
+    height: 200px;
+  }
+
+  .act-main {
+    width: 104px;
+    height: 104px;
+  }
+}
+
+@media (pointer: fine) {
+  .stick-zone {
+    width: 34%;
+  }
+
+  .action-pad {
+    opacity: 0.82;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .toast {
+    animation: none;
+  }
+}
